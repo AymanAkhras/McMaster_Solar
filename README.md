@@ -1,6 +1,6 @@
 # McMaster_Solar Canbus/DAQ System
 
-##### Documentation 
+## Documentation 
 
 
 [Read Function](https://github.com/AymanAkhras/McMaster_Solar/blob/main/CAN_write.ino)
