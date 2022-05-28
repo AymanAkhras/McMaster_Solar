@@ -1,4 +1,4 @@
-//#define sd
+#define sd
 #define test
 
 #include <SoftwareSerial.h>
@@ -36,7 +36,7 @@ void setup() {
     Serial.println(F("× SD"));
     delay(1000);
   }
-  Serial.println(F("SD ok"));
+  Serial.println(F("✓ SD"));
 
   if (SD.exists(filename)) {
     Serial.println((String)"Overwriting " + (String)filename);
@@ -44,7 +44,7 @@ void setup() {
 
     File dataFile = SD.open(filename, FILE_WRITE);
     if (dataFile) {
-      dataFile.println("battery\ttemperature\tspeed");
+      dataFile.println("battery,temperature,speed");
       dataFile.close();
     } else {
       Serial.println((String)"× " + (String)filename);
@@ -100,7 +100,7 @@ void loop() {
     Serial.println((String) '@' + millis() + "> " + dataOut);
     
     BLEsend(dataOut, dataOutLength);
-    delay(500);
+    delay(500); // delay to prevent next msg sending in same packet
   }
 
   if (millis() - timer >= 1000) {
