@@ -1,4 +1,4 @@
-#define sd
+//#define sd
 #define test
 
 #include <SoftwareSerial.h>
@@ -22,13 +22,17 @@ void setup() {
   HM10.begin(9600);
   HM10.listen();
   HM10.print("AT"); delay(500); HM10.print("AT"); delay(500);
-  while (HM10.available() > 0) {
-    dataIn = HM10.readString();
-  }
-  if (dataIn.equals("OK") || dataIn == "OKOK") {
-    Serial.println(F("✓ HM10 9600"));
-  } else {
-    Serial.println(F("× HM10"));
+  while (true) {
+    while (HM10.available() > 0) {
+      dataIn = HM10.readString();
+    }
+    
+    if (dataIn.equals("OK") || dataIn == "OKOK") {
+      Serial.println(F("✓ HM10 9600"));
+      break;
+    } else {
+      Serial.println(F("× HM10"));
+    }
   }
 
   #ifdef sd
@@ -100,16 +104,16 @@ void loop() {
     Serial.println((String) '@' + millis() + "> " + dataOut);
     
     BLEsend(dataOut, dataOutLength);
-    delay(500); // delay to prevent next msg sending in same packet
-  }
-
-  if (millis() - timer >= 1000) {
-    HM10.print(counter++);
-    timer = millis();
+    delay(300); // delay to prevent next msg sending in same packet
   }
 
   dataOut[0] = 0;
   #endif //----------------------------------------
+
+  if (millis() - timer >= 1000) {
+//    HM10.print(counter++);
+    timer = millis();
+  }
 }
 
 void BLEsend(char* msg, int length) {
